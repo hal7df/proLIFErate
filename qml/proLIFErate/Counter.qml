@@ -4,7 +4,7 @@ Rectangle {
     id: counter
 
     property int playerNum
-    property bool isNormalColor: color == "#00000000" ? true : false
+    property bool isNormalColor: color == "#00000000"
     property bool loss: false
 
     color: "#00000000"
@@ -13,7 +13,7 @@ Rectangle {
 
     onLossChanged: {
         if (loss)
-            color = "#40ff0000";
+            color = "#ff4444";
     }
 
     onColorChanged: {
@@ -69,24 +69,34 @@ Rectangle {
             onClicked: parent.forceActiveFocus()
         }
 
-        Item {
+        Grid {
             id: statsDisplay
-            anchors { top: parent.top; left: parent.left; right: parent.right; topMargin: 2; bottom: parent.bottom }
+            anchors { top: parent.top; left: parent.left; right: parent.right; bottom: parent.bottom; topMargin: 2; leftMargin: 2; rightMargin: 2 }
+
+            columns: 2
+            spacing: 4
 
             Rectangle {
                 id: lifeBack
-                anchors { top: parent.top; left: parent.left; right: parent.horizontalCenter; bottom: parent.bottom; margins: 2 }
-                radius: 3
+
+                height: parent.height-2
+                width: (parent.width/2)-2
+
                 border { color: "#000000"; width: 2 }
-                gradient: Gradient {
-                    GradientStop { position: 1.0; color: "#ffffff" }
-                    GradientStop { position: 0.0; color: "#6f6f6f" }
-                }
+
+                color: "#00000000"
 
                 MouseArea {
                     id: lifeFocusIntercept
                     anchors.fill: parent
                     onClicked: scope.forceActiveFocus()
+                }
+
+                Text {
+                    id: lifeLabel
+                    anchors { top: parent.top; horizontalCenter: parent.horizontalCenter; topMargin: 2 }
+                    text: "Life"
+                    font.pointSize: 16
                 }
 
                 Text {
@@ -103,22 +113,28 @@ Rectangle {
                     }
                     }
                 }
-            }
 
             Rectangle {
                 id: poisonBack
-                anchors { top: parent.top; left: parent.horizontalCenter; right: parent.right; bottom: parent.bottom; margins: 2 }
-                radius: 3
+
+                height: parent.height-2
+                width: (parent.width/2)-2
+
                 border { color: "#000000"; width: 2 }
-                gradient: Gradient {
-                    GradientStop { position: 1.0; color: "#ffffff" }
-                    GradientStop { position: 0.0; color: "#6f6f6f" }
-                }
+
+                color: "#00000000"
 
                 MouseArea {
                     id: poisonFocusIntercept
                     anchors.fill: parent
                     onClicked: scope.forceActiveFocus()
+                }
+
+                Text {
+                    id: poisonLabel
+                    anchors { top: parent.top; horizontalCenter: parent.horizontalCenter; topMargin: 2 }
+                    text: "Poison"
+                    font.pointSize: 16
                 }
 
                 Text {
@@ -136,24 +152,22 @@ Rectangle {
                 }
             }
         }
+    }
 
-        Item {
-            id: countButtons
+        Grid {
+            id: buttonAlign
             anchors { top: scope.bottom; left: parent.left; right: parent.right; bottom: parent.bottom; topMargin: 2; bottomMargin: 2 }
+            columns: 4
 
-            Text {
-                id: lifeLabel
-                anchors { top: parent.top; left: parent.left; right: parent.horizontalCenter }
-                text: "Life"
-                horizontalAlignment: Text.AlignHCenter
-                font.pointSize: 16
-            }
+            spacing: 2
 
             IconButton {
                 id: lifeUp
                 source: "up"
-                anchors { top: lifeLabel.bottom; left: parent.left; bottom: parent.bottom; margins: 2 }
+
                 width: (parent.width/4)-2
+                height: parent.height-1
+
                 onClicked: life.lifeCount++
                 disabled: life.lifeCount <= 0 || poison.poisonCount >= 10
             }
@@ -161,24 +175,22 @@ Rectangle {
             IconButton {
                 id: lifeDown
                 source: "down"
-                anchors {top: lifeLabel.bottom; left: lifeUp.right; right: parent.horizontalCenter; bottom: parent.bottom; margins: 2 }
+
+                width: (parent.width/4)-2
+                height: parent.height-1
+
                 onClicked: life.lifeCount--
                 disabled: life.lifeCount <= 0 || poison.poisonCount >= 10
-            }
-
-            Text {
-                id: poisonLabel
-                anchors { top: parent.top; left: parent.horizontalCenter; right: parent.right }
-                text: "Poison"
-                horizontalAlignment: Text.AlignHCenter
-                font.pointSize: 16
             }
 
             IconButton {
                 id: poisonUp
                 source: "up"
-                anchors { top: poisonLabel.bottom; left: lifeDown.right; bottom: parent.bottom; margins: 2 }
+
+
                 width: (parent.width/4)-2
+                height: parent.height-1
+
                 onClicked: poison.poisonCount++
                 disabled: poison.poisonCount >= 10 || life.lifeCount <= 0
             }
@@ -186,7 +198,10 @@ Rectangle {
             IconButton {
                 id: poisonDown
                 source: "down"
-                anchors {top: poisonLabel.bottom; left: poisonUp.right; right: parent.right; bottom: parent.bottom; margins: 2 }
+
+                width: (parent.width/4)-2
+                height: parent.height-1
+
                 onClicked: poison.poisonCount--
                 disabled: poison.poisonCount >= 10 || life.lifeCount <= 0 || poison.poisonCount <= 0
             }

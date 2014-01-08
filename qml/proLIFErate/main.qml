@@ -4,7 +4,9 @@ Rectangle {
     id: root
     width: 480
     height: 800
-    color: "beige"
+    color: "#e7ece6"
+
+    property bool debug: false
 
     Counter {
         id: counter1
@@ -37,9 +39,9 @@ Rectangle {
                 selectPlayer = Math.floor((Math.random()*10)+1);
 
                 if ((selectPlayer % 2) == 1)
-                    counter1.color = "#6633cc33";
+                    counter1.color = "#66cc00";
                 else
-                    counter2.color = "#4033cc33"
+                    counter2.color = "#66cc00"
             }
         }
 
@@ -53,10 +55,16 @@ Rectangle {
                 selectPlayer = Math.floor((Math.random()*10)+1);
 
                 if ((selectPlayer % 2) == 1)
-                    counter1.color = "#6633cc33";
+                    counter1.color = "#66cc00";
                 else
-                    counter2.color = "#4033cc33"
+                    counter2.color = "#66cc00"
             }
         }
+    }
+
+    function writeDebug(msg)
+    {
+        if (debug)
+            console.log(msg);
     }
 }
