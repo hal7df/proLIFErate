@@ -8,6 +8,4 @@ Rectangle {
     color: "#dddddd"
     border.color: "#d7dcd6"
     border.width: 3
-
-    onHeightChanged: parent.writeDebug(height);
 }

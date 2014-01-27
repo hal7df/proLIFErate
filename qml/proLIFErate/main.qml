@@ -2,11 +2,12 @@ import QtQuick 1.1
 
 Rectangle {
     id: root
+
+    property Item toolbarRefer
+
     width: 480
     height: 800
     color: "#e7ece6"
-
-    property bool debug: false
 
     Counter {
         id: counter1
@@ -21,10 +22,11 @@ Rectangle {
         rotation: 180
     }
 
-    Toolbar {
+    DynamicToolbar {
         id: toolbar
         anchors.verticalCenter: parent.verticalCenter
-        z:30
+
+        onEditingDone: parent.toolbarRefer.receive(value)
 
         IconWidget {
             id: restartGame
@@ -62,9 +64,52 @@ Rectangle {
         }
     }
 
-    function writeDebug(msg)
+    /*** Passthrough functions for the Dynamic Toolbar ***/
+
+    function requestText (referrer,iVal)
     {
-        if (debug)
-            console.log(msg);
+        var success;
+        success = toolbar.requestText(iVal);
+
+        if (success)
+            toolbarRefer = referrer;
+
+        return success;
+    }
+
+    function requestViewer (referrer,iVal,nRot)
+    {
+        var success;
+        success = toolbar.requestViewer(iVal,nRot);
+
+        if (success)
+            toolbarRefer = referrer;
+
+        return success;
+    }
+
+    function append (val)
+    {
+        return toolbar.append(val);
+    }
+
+    function add (val)
+    {
+        return toolbar.add(val);
+    }
+
+    function deleteLast ()
+    {
+        return toolbar.deleteLast();
+    }
+
+    function replace (val)
+    {
+        return toolbar.replace(val);
+    }
+
+    function getToolbarContents()
+    {
+        return toolbar.contents;
     }
 }

@@ -27,35 +27,43 @@ Rectangle {
         id: nameBack
         anchors { margins: 5; top: parent.top; right: parent.right; left: parent.left }
         height: parent.height/6
-        visible: name.focus
-        color: "#ffffff"
-        border { color: "#000000"; width: 2 }
-    }
+        color: "#00000000"
+        border { color: "#00000000"; width: 2 }
 
-    TextInput {
-        id: name
-        anchors.centerIn: nameBack
-        width: nameBack.width - 5
-        text: "Player "+parent.playerNum
-        selectByMouse: true
-        horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: nameBack.height*0.72
+        Text {
+            id: name
 
-        property bool defaultText: true
+            property bool defaultText: true
 
-        onFocusChanged: {
-            if (activeFocus)
-                counter.rotation = 0;
-            else
-            {
-                if (playerNum == 1)
-                    counter.rotation = 0;
-                else
-                    counter.rotation = 180;
+            anchors.centerIn: nameBack
+            width: nameBack.width - 5
+            text: "Player"
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: nameBack.height*0.72
+
+            onTextChanged: defaultText = false
+        }
+
+        MouseArea {
+            id: getEdit
+
+            anchors.fill: parent
+
+            onClicked: {
+                if(counter.requestText(nameBack,name.text))
+                {
+                    parent.color = "#ffffff";
+                    parent.border.color = "#000000";
+                }
             }
         }
-        onTextChanged: defaultText = false
 
+        function receive (value)
+        {
+            name.text = value;
+            color = "#00000000";
+            border.color = "#00000000"
+        }
     }
 
     FocusScope {
@@ -91,6 +99,13 @@ Rectangle {
                         counter.loss = true;
                 }
                 onClickIntercept: scope.forceActiveFocus()
+
+                onClicked: {
+                    if (rqID == 1)
+                        counter.requestViewer(life,count);
+                }
+
+                onReceived: bulkNumChange.visible = false
             }
 
             CounterBase {
@@ -110,9 +125,27 @@ Rectangle {
                         counter.loss = true;
                 }
                 onClickIntercept: scope.forceActiveFocus()
+                onClicked: {
+                    if (rqID == 1)
+                        counter.requestViewer(poison,count);
+                }
+
+                onReceived: bulkNumChange.visible = false;
             }
 
         }
+    }
+
+    Numpad {
+        id: bulkNumChange
+
+        anchors.fill: parent
+
+        visible: false
+
+        onAppendDisplay: parent.append(add)
+        onAddNum: parent.addVal (add)
+        onBackspace: parent.deleteLast()
     }
 
         function findRotation()
@@ -133,5 +166,49 @@ Rectangle {
             life.count = 20;
             poison.count = 0;
             loss = false;
+        }
+
+        /*** Passthrough functions for the Dynamic Toolbar ***/
+
+        function requestText (referrer,iVal)
+        {
+            return parent.requestText(referrer,iVal);
+        }
+
+        function requestViewer (referrer,iVal)
+        {
+            var retVal;
+
+            retVal = parent.requestViewer(referrer,iVal,rotation);
+
+            if (retVal)
+                bulkNumChange.visible = true;
+
+            return retVal;
+        }
+
+        function append (val)
+        {
+            return parent.append(val);
+        }
+
+        function addVal (val)
+        {
+            return parent.add(val);
+        }
+
+        function deleteLast ()
+        {
+            return parent.deleteLast();
+        }
+
+        function replace (val)
+        {
+            return parent.replace(val);
+        }
+
+        function getToolbarContents()
+        {
+            return parent.getToolbarContents();
         }
     }

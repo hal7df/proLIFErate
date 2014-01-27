@@ -5,6 +5,7 @@ Rectangle {
 
     property string name
     property int count: 0
+    property int stRqID     //Property to hold what is being edited
     property bool upDisabled: false
     property bool downDisabled: false
     property bool disabled: false
@@ -12,6 +13,7 @@ Rectangle {
 
     signal clickIntercept  //Signal that is fired whenever this object receives a click.
     signal clicked (int rqID)  //Signal that is fired when there is an edit property request.
+    signal received //Signal that is fired when the counter receives data from the editor (numpad only)
 
     /** rqID values
       * 0: change name
@@ -21,6 +23,8 @@ Rectangle {
       */
 
     color: "#00000000"
+
+    onClicked: stRqID = rqID
 
     Rectangle {
         id: counterDispContainer
@@ -117,6 +121,18 @@ Rectangle {
             Component.onCompleted: clicked.connect(counterBase.clickIntercept)
             onClicked: counterBase.count--
             disabled: counterBase.downDisabled || counterBase.disabled
+        }
+    }
+
+    function receive (val)
+    {
+        if (stRqID == 0)
+            name = val;
+        else
+        {
+            count = parseInt(val);
+            console.log("Counter "+name+" received val "+val+", updated to "+count);
+            received();
         }
     }
 }
