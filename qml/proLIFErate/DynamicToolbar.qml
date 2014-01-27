@@ -6,7 +6,7 @@ Toolbar {
 
     property bool editing: false
     property int editType: 0
-    property string contents
+    property variant contents
 
     /* editType values:
      * 0: Normal TextInput
@@ -51,9 +51,7 @@ Toolbar {
         source: "accept"
         visible: parent.editing
 
-        onClicked: {
-            parent.editingDone(input.text);
-        }
+        onClicked: parent.editingDone(input.text)
     }
 
     IconWidget {
@@ -163,8 +161,13 @@ Toolbar {
     {
         if (editing && editType == 1 && parseInt(input.text) != NaN)
         {
-            input.text = parseInt(input.text) + val;
-            return true;
+            if (parseInt(input.text)+val >= 0)
+            {
+                input.text = parseInt(input.text) + val;
+                return true;
+            }
+            else
+                return false;
         }
         else
             return false;

@@ -41,7 +41,7 @@ Rectangle {
             anchors.fill: parent
 
             Text {
-                id: count
+                id: showCount
 
                 anchors.centerIn: parent
 
@@ -132,7 +132,7 @@ Rectangle {
                 name = val;
             else
             {
-                count = parseInt(val);
+                count = parseInt(val,10);
                 console.log("Counter "+name+" received val "+val+", updated to "+count);
             }
         }

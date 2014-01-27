@@ -30,8 +30,11 @@ Rectangle {
 
         IconWidget {
             id: restartGame
+
             anchors { top: parent.top; bottom: parent.bottom; right: parent.horizontalCenter; rightMargin: (parent.width/4)-(width/2) }
+
             source: "restart"
+
             onClicked: {
                 var selectPlayer
 

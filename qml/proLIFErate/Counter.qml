@@ -122,7 +122,7 @@ Rectangle {
                 width: (parent.width/2)-1
 
                 onCountChanged: {
-                    if (count == 10)
+                    if (count >= 10)
                         counter.loss = true;
                 }
                 onClickIntercept: scope.forceActiveFocus()
