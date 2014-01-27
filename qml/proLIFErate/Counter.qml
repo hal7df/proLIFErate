@@ -60,7 +60,8 @@ Rectangle {
 
         function receive (value)
         {
-            name.text = value;
+            if (value != undefined)
+                name.text = value;
             color = "#00000000";
             border.color = "#00000000"
         }

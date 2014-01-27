@@ -126,13 +126,16 @@ Rectangle {
 
     function receive (val)
     {
-        if (stRqID == 0)
-            name = val;
-        else
+        if (val != undefined)
         {
-            count = parseInt(val);
-            console.log("Counter "+name+" received val "+val+", updated to "+count);
-            received();
+            if (stRqID == 0)
+                name = val;
+            else
+            {
+                count = parseInt(val);
+                console.log("Counter "+name+" received val "+val+", updated to "+count);
+            }
         }
+        received();
     }
 }

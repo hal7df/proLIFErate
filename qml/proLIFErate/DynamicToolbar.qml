@@ -24,6 +24,7 @@ Toolbar {
                 children[x].visible=false;
 
             done.visible = true;
+            cancel.visible = true;
             inputBack.visible = true
         }
         else
@@ -32,6 +33,7 @@ Toolbar {
                 children[x].visible = true;
 
             done.visible = false;
+            cancel.visible = false;
             inputBack.visible = false;
         }
     }
@@ -54,10 +56,21 @@ Toolbar {
         }
     }
 
+    IconWidget {
+        id: cancel
+
+        anchors { left: parent.left; top: parent.top; bottom: parent.bottom }
+
+        source: "cancel"
+        visible: parent.editing
+
+        onClicked: parent.editingDone(undefined);
+    }
+
     Rectangle {
         id: inputBack
 
-        anchors { left: parent.left; top: parent.top; right: done.left; bottom: parent.bottom }
+        anchors { left: cancel.right; top: parent.top; right: done.left; bottom: parent.bottom }
         visible: parent.editing
 
         color: "#ffffff"

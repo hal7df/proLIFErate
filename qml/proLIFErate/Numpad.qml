@@ -56,6 +56,11 @@ Rectangle {
                 onClicked: numpad.appendDisplay(0)
             }
 
+            Item {
+                height: (numbers.width/4)-1
+                width: (numbers.width/3)-1
+            }
+
             IconButton {
                 height: (numbers.height/4)-1
                 width: (numbers.width/3)-1
@@ -64,6 +69,11 @@ Rectangle {
 
                 onClicked: numpad.backspace()
             }
+        }
+
+        Rectangle {
+            anchors { left: numbers.right; top: parent.top; right: addButtons.left; bottom: parent.bottom; margins: 2 }
+            color: "#66d2d2d2"
         }
 
         Grid {
