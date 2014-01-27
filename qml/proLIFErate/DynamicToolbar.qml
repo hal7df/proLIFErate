@@ -6,7 +6,7 @@ Toolbar {
 
     property bool editing: false
     property int editType: 0
-    property variant contents
+    property alias contents: input.text
 
     /* editType values:
      * 0: Normal TextInput
@@ -81,7 +81,6 @@ Toolbar {
 
             horizontalAlignment: Text.AlignHCenter
             font.pointSize: parent.height*0.6
-            text: dynamicToolbar.contents
             readOnly: dynamicToolbar.editType != 0
 
             onAccepted: dynamicToolbar.editingDone(text)
@@ -100,7 +99,6 @@ Toolbar {
         if (!editing)
         {
             editType = 0;
-            contents = iVal;
             input.text = iVal;
             editing = true;
 
@@ -121,8 +119,7 @@ Toolbar {
         if (!editing)
         {
             editType = 1;
-            contents = iVal;
-            input.text = contents;
+            input.text = iVal;
             editing = true;
             rotation = nRot;
 
@@ -143,8 +140,7 @@ Toolbar {
     {
         if (editing && editType == 1)
         {
-            contents = contents + val;
-            console.log("Updated to "+contents);
+            input.text = input.text + val;
 
             return true;
         }
@@ -182,7 +178,7 @@ Toolbar {
     {
         if (editing && editType == 1)
         {
-            contents = val;
+            input.text = val;
 
             return true;
         }
@@ -197,11 +193,9 @@ Toolbar {
 
     function deleteLast ()
     {
-        console.log(input.length);
-        if (editing && editType == 1 && input.length > 0)
+        if (editing && editType == 1 && input.text.length > 0)
         {
-            contents = contents.substring(0,contents.length-1);
-            contents = input.text;
+            input.text = input.text.substring(0,input.text.length-1);
             return true;
         }
         else
