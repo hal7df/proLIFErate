@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 2.0
 
 Rectangle {
     id: counter
@@ -21,7 +21,7 @@ Rectangle {
             colorAnimate.start();
     }
 
-    PropertyAnimation on color { id: colorAnimate; running: !counter.isNormalColor; to: "#00000000"; duration: 1500 }
+    ColorAnimation on color { id: colorAnimate; running: !counter.isNormalColor; to: "#00000000"; duration: 1500 }
 
     Rectangle {
         id: nameBack
@@ -37,7 +37,7 @@ Rectangle {
 
             anchors.centerIn: nameBack
             width: nameBack.width - 5
-            text: "Player"
+            text: "Player "+playerNum
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: nameBack.height*0.72
 

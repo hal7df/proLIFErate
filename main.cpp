@@ -1,15 +1,13 @@
-#include <QApplication>
-#include "qmlapplicationviewer.h"
+#include <QtGui/QGuiApplication>
+#include "qtquick2applicationviewer.h"
 
-Q_DECL_EXPORT int main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-    QScopedPointer<QApplication> app(createApplication(argc, argv));
+    QGuiApplication app(argc, argv);
 
-    QmlApplicationViewer viewer;
-    viewer.addImportPath(QLatin1String("modules"));
-    viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
-    viewer.setMainQmlFile(QLatin1String("qml/proLIFErate/main.qml"));
+    QtQuick2ApplicationViewer viewer;
+    viewer.setMainQmlFile(QStringLiteral("qml/proLIFErate/main.qml"));
     viewer.showExpanded();
 
-    return app->exec();
+    return app.exec();
 }
