@@ -4,10 +4,10 @@ Rectangle {
     id: counter
 
     property int playerNum
-    property bool isNormalColor: color == "#00000000"
+    property bool isNormalColor: color == "#e7ece6"
     property bool loss: false
 
-    color: "#00000000"
+    color: "#e7ece6"
     height: parent.height/2
     rotation: playerNum == 2 ? 180 : 0
 
@@ -17,11 +17,11 @@ Rectangle {
     }
 
     onColorChanged: {
-        if (color != "#00000000")
+        if (color != "#e7ece6")
             colorAnimate.start();
     }
 
-    ColorAnimation on color { id: colorAnimate; running: !counter.isNormalColor; to: "#00000000"; duration: 1500 }
+    ColorAnimation on color { id: colorAnimate; running: !counter.isNormalColor; to: "#e7ece6"; duration: 1500 }
 
     Rectangle {
         id: nameBack

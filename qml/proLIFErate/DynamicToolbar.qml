@@ -81,6 +81,7 @@ Toolbar {
             horizontalAlignment: Text.AlignHCenter
             font.pointSize: parent.height*0.6
             readOnly: dynamicToolbar.editType != 0
+            selectByMouse: !readOnly
 
             onAccepted: dynamicToolbar.editingDone(text)
         }

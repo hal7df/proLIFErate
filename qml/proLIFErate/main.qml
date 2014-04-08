@@ -31,7 +31,7 @@ Rectangle {
         IconWidget {
             id: restartGame
 
-            anchors { top: parent.top; bottom: parent.bottom; right: parent.horizontalCenter; rightMargin: (parent.width/4)-(width/2) }
+            anchors { top: parent.top; bottom: parent.bottom; horizontalCenter: parent.horizontalCenter }
 
             source: "restart"
 
@@ -52,7 +52,7 @@ Rectangle {
 
         IconWidget {
             id: selectPlayer
-            anchors { top: parent.top; bottom: parent.bottom; left: parent.horizontalCenter; leftMargin: (parent.width/4)-(width/2)}
+            anchors { top: parent.top; bottom: parent.bottom; left: parent.left; leftMargin: (parent.width/10) }
             source: "select"
             onClicked: {
                 var selectPlayer
@@ -64,6 +64,36 @@ Rectangle {
                 else
                     counter2.color = "#66cc00"
             }
+        }
+
+        IconWidget {
+            id: addPlayer
+            anchors { top: parent.top; bottom: parent.bottom; right: parent.right; rightMargin: (parent.width/10) }
+            source: "add"
+
+            onClicked: {
+                players.append({"name": "player", "life":20, "poison":0, "active": true});
+            }
+        }
+    }
+
+    ListModel {
+        id: players
+
+        ListElement {
+            name: "Player 1"
+            life: 20
+            poison: 0
+
+            active: true
+        }
+
+        ListElement {
+            name: "Player 2"
+            life: 20
+            poison: 0
+
+            active: true
         }
     }
 
