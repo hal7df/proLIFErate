@@ -84,6 +84,7 @@ Toolbar {
             readOnly: dynamicToolbar.editType != 0
 
             onAccepted: dynamicToolbar.editingDone(text)
+            inputMethodHints: Qt.ImhNoPredictiveText
         }
     }
 

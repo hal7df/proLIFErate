@@ -16,11 +16,6 @@ Rectangle {
             color = "#ff4444";
     }
 
-    onColorChanged: {
-        if (color != "#00000000")
-            colorAnimate.start();
-    }
-
     PropertyAnimation on color { id: colorAnimate; running: !counter.isNormalColor; to: "#00000000"; duration: 1500 }
 
     Rectangle {
@@ -43,6 +38,7 @@ Rectangle {
 
             onTextChanged: defaultText = false
         }
+
 
         MouseArea {
             id: getEdit
