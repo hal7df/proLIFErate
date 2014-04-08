@@ -6,6 +6,7 @@ Rectangle {
     property int playerNum
     property bool isNormalColor: color == "#00000000"
     property bool loss: false
+    property Item dynToolbar: parent.dynToolbar
 
     color: "#00000000"
     height: parent.height/2
@@ -14,6 +15,11 @@ Rectangle {
     onLossChanged: {
         if (loss)
             color = "#ff4444";
+    }
+
+    onColorChanged: {
+        if (!isNormalColor)
+            colorAnimate.start();
     }
 
     PropertyAnimation on color { id: colorAnimate; running: !counter.isNormalColor; to: "#00000000"; duration: 1500 }
@@ -46,7 +52,7 @@ Rectangle {
             anchors.fill: parent
 
             onClicked: {
-                if(counter.requestText(nameBack,name.text))
+                if(counter.dynToolbar.requestText(name.text,nameBack))
                 {
                     parent.color = "#ffffff";
                     parent.border.color = "#000000";
@@ -99,7 +105,10 @@ Rectangle {
 
                 onClicked: {
                     if (rqID == 1)
-                        counter.requestViewer(life,count);
+                    {
+                        if (counter.dynToolbar.requestViewer(count,counter.rotation,life))
+                            bulkNumChange.visible = true;
+                    }
                 }
 
                 onReceived: bulkNumChange.visible = false
@@ -124,7 +133,10 @@ Rectangle {
                 onClickIntercept: scope.forceActiveFocus()
                 onClicked: {
                     if (rqID == 1)
-                        counter.requestViewer(poison,count);
+                    {
+                        if (counter.dynToolbar.requestViewer(count,counter.rotation,poison))
+                            bulkNumChange.visible = true;
+                    }
                 }
 
                 onReceived: bulkNumChange.visible = false;
@@ -140,9 +152,9 @@ Rectangle {
 
         visible: false
 
-        onAppendDisplay: parent.append(add)
-        onAddNum: parent.addVal (add)
-        onBackspace: parent.deleteLast()
+        onAppendDisplay: parent.dynToolbar.append(add)
+        onAddNum: parent.dynToolbar.add(add)
+        onBackspace: parent.dynToolbar.deleteLast()
     }
 
         function findRotation()
@@ -163,49 +175,5 @@ Rectangle {
             life.count = 20;
             poison.count = 0;
             loss = false;
-        }
-
-        /*** Passthrough functions for the Dynamic Toolbar ***/
-
-        function requestText (referrer,iVal)
-        {
-            return parent.requestText(referrer,iVal);
-        }
-
-        function requestViewer (referrer,iVal)
-        {
-            var retVal;
-
-            retVal = parent.requestViewer(referrer,iVal,rotation);
-
-            if (retVal)
-                bulkNumChange.visible = true;
-
-            return retVal;
-        }
-
-        function append (val)
-        {
-            return parent.append(val);
-        }
-
-        function addVal (val)
-        {
-            return parent.add(val);
-        }
-
-        function deleteLast ()
-        {
-            return parent.deleteLast();
-        }
-
-        function replace (val)
-        {
-            return parent.replace(val);
-        }
-
-        function getToolbarContents()
-        {
-            return parent.getToolbarContents();
         }
     }

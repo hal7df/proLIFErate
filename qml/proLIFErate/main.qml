@@ -3,7 +3,7 @@ import QtQuick 1.1
 Rectangle {
     id: root
 
-    property Item toolbarRefer
+    property alias dynToolbar: toolbar
 
     width: 480
     height: 800
@@ -25,8 +25,6 @@ Rectangle {
     DynamicToolbar {
         id: toolbar
         anchors.verticalCenter: parent.verticalCenter
-
-        onEditingDone: parent.toolbarRefer.receive(value)
 
         IconWidget {
             id: restartGame
