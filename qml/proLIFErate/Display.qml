@@ -1,7 +1,7 @@
 import QtQuick 1.1
 
 Rectangle {
-    id: counter
+    id: display
 
     property int playerNum
     property bool isNormalColor: color == "#00000000"
@@ -22,7 +22,7 @@ Rectangle {
             colorAnimate.start();
     }
 
-    PropertyAnimation on color { id: colorAnimate; running: !counter.isNormalColor; to: "#00000000"; duration: 1500 }
+    PropertyAnimation on color { id: colorAnimate; running: !display.isNormalColor; to: "#00000000"; duration: 1500 }
 
     Rectangle {
         id: nameBack
@@ -52,7 +52,7 @@ Rectangle {
             anchors.fill: parent
 
             onClicked: {
-                if(counter.dynToolbar.requestText(name.text,nameBack))
+                if(display.dynToolbar.requestText(name.text,nameBack))
                 {
                     parent.color = "#ffffff";
                     parent.border.color = "#000000";
@@ -92,21 +92,21 @@ Rectangle {
                 name: "Life"
                 count: 20
                 editable: false
-                disabled: counter.loss
+                disabled: display.loss
 
                 height: parent.height
                 width: (parent.width/2)-1
 
                 onCountChanged: {
                     if (life.count <= 0)
-                        counter.loss = true;
+                        display.loss = true;
                 }
                 onClickIntercept: scope.forceActiveFocus()
 
                 onClicked: {
                     if (rqID == 1)
                     {
-                        if (counter.dynToolbar.requestViewer(count,counter.rotation,life))
+                        if (display.dynToolbar.requestViewer(count,display.rotation,life))
                             bulkNumChange.visible = true;
                     }
                 }
@@ -120,7 +120,7 @@ Rectangle {
                 name: "Poison"
                 count: 0
                 editable: false
-                disabled: counter.loss
+                disabled: display.loss
                 downDisabled: count == 0
 
                 height: parent.height
@@ -128,13 +128,13 @@ Rectangle {
 
                 onCountChanged: {
                     if (count >= 10)
-                        counter.loss = true;
+                        display.loss = true;
                 }
                 onClickIntercept: scope.forceActiveFocus()
                 onClicked: {
                     if (rqID == 1)
                     {
-                        if (counter.dynToolbar.requestViewer(count,counter.rotation,poison))
+                        if (display.dynToolbar.requestViewer(count,display.rotation,poison))
                             bulkNumChange.visible = true;
                     }
                 }
