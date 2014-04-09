@@ -3,10 +3,6 @@ import QtQuick 2.0
 Rectangle {
     id: display
 
-    property alias lifeCount: life.count
-    property alias poisonCount: poison.count
-    property string playerName: "Player "+playerNum
-
     property int playerNum
     property bool isNormalColor: color == "#e7ece6"
     property bool loss: false
@@ -42,12 +38,13 @@ Rectangle {
 
             anchors.centerIn: nameBack
             width: nameBack.width - 5
-            text: display.playerName
+            text: "Player "+playerNum
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: nameBack.height*0.72
 
             onTextChanged: defaultText = false
         }
+
 
         MouseArea {
             id: getEdit
@@ -66,7 +63,7 @@ Rectangle {
         function receive (value)
         {
             if (value != undefined)
-                display.playerName = value;
+                name.text = value;
             color = "#00000000";
             border.color = "#00000000"
         }
