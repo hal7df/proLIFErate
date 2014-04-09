@@ -2,6 +2,16 @@ import QtQuick 2.0
 
 Rectangle {
     id: iconWidget
+
+    property color pressedColor: "#33B5E5"
+    property string source: ""
+    property bool srcAbsolute: false
+    property bool toggle: false
+    property bool toggled: false
+    property bool disabled: false
+    property alias iconRotation: image.rotation
+    signal clicked
+
     color: "#00000000"
     width: height
     states: [ State {
@@ -18,15 +28,6 @@ Rectangle {
         }
 
     ]
-
-    property color pressedColor: "#33B5E5"
-    property string source: ""
-    property bool srcAbsolute: false
-    property bool toggle: false
-    property bool toggled: false
-    property bool disabled: false
-    property alias iconRotation: image.rotation
-    signal clicked
 
     Image {
         id: image

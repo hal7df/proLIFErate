@@ -7,6 +7,8 @@ Toolbar {
     property int editType: 0
     property alias contents: input.text
 
+    property Item caller
+
     /* editType values:
      * 0: Normal TextInput
      * 1: From external editing source
@@ -40,6 +42,7 @@ Toolbar {
     onEditingDone: {
         rotation = 0;
         editing = false;
+        caller.receive(value);
     }
 
     IconWidget {
@@ -84,6 +87,7 @@ Toolbar {
             selectByMouse: !readOnly
 
             onAccepted: dynamicToolbar.editingDone(text)
+            inputMethodHints: Qt.ImhNoPredictiveText
         }
     }
 
@@ -94,12 +98,13 @@ Toolbar {
       * Returns false if editing in the toolbar was locked by another component.
       */
 
-    function requestText (iVal)
+    function requestText (iVal,call)
     {
         if (!editing)
         {
             editType = 0;
             input.text = iVal;
+            caller = call;
             editing = true;
 
             return true;
@@ -114,13 +119,14 @@ Toolbar {
       * Returns false if editing is locked by another component
       */
 
-    function requestViewer (iVal, nRot)
+    function requestViewer (iVal, nRot, call)
     {
         if (!editing)
         {
             editType = 1;
             input.text = iVal;
             editing = true;
+            caller = call;
             rotation = nRot;
 
             return true;

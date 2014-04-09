@@ -44,5 +44,5 @@ OTHER_FILES += \
     android/src/org/kde/necessitas/ministro/IMinistroCallback.aidl \
     android/src/org/kde/necessitas/origo/QtApplication.java \
     android/src/org/kde/necessitas/origo/QtActivity.java
-
-ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+    qml/proLIFErate/IconButton.qml \
+    qml/proLIFErate/Display.qml
