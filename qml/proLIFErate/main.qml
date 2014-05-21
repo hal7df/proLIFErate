@@ -22,6 +22,39 @@ Rectangle {
         rotation: 180
     }
 
+    CounterView {
+        id: bottomScreen
+
+        anchors {
+            bottom: parent.bottom
+            right: parent.right
+            top: toolbar.bottom
+            left: parent.left
+        }
+
+        model: players
+        otherViewAt: topScreen.playerAt
+
+        Component.onCompleted: positionViewAtIndex(0,ListView.Beginning)
+    }
+
+    CounterView {
+        id: topScreen
+
+        anchors {
+            bottom: toolbar.top
+            right: parent.right
+            top: parent.top
+            left: parent.left
+        }
+
+        model: players
+        otherViewAt: bottomScreen.playerAt
+        rotation: 180
+
+        Component.onCompleted: positionViewAtIndex(1,ListView.Beginning)
+    }
+
     DynamicToolbar {
         id: toolbar
         anchors.verticalCenter: parent.verticalCenter
@@ -80,18 +113,38 @@ Rectangle {
 
         ListElement {
             name: "Player 1"
-            life: 20
-            poison: 0
 
-            active: true
+            counters: [
+                ListElement {
+                    name: "Life"
+                    count: 20
+                    editable: false
+                } ,
+                ListElement {
+                    name: "Poison"
+                    count: 0
+                    editable: false
+                }
+
+            ]
         }
 
         ListElement {
             name: "Player 2"
-            life: 20
-            poison: 0
 
-            active: true
+            counters: [
+                ListElement {
+                    counterName: "Life"
+                    lCount: 20
+                    edit: false
+                } ,
+                ListElement {
+                    counterName: "Poison"
+                    lCount: 0
+                    edit: false
+                }
+
+            ]
         }
     }
 
