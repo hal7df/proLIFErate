@@ -3,7 +3,7 @@ import QtQuick 2.0
 Item {
     id: playerContain
 
-    property DynamicToolbar dynToolbar: parent.toolbar
+    property DynamicToolbar dynToolbar
     property ListModel model
     property int otherViewAt //to make sure two views don't settle on the same player
     readonly property alias playerAt: players.currentIndex
@@ -160,7 +160,7 @@ Item {
                                 id: counter
 
                                 width: (counters.width/2)-1
-                                height: counters.height
+                                height: counters.height-2
 
                                 name: counterName
                                 count: lCount
@@ -193,7 +193,6 @@ Item {
                             border.color: "#bbeeeeee"
 
                             states: State {
-                                name: pressed
                                 when:  addClick.pressed
                                 PropertyChanges { target: addCounter; color: "#bbeeeeee" }
                             }
@@ -201,7 +200,7 @@ Item {
                             Image {
                                 anchors.centerIn: parent
 
-                                height: parnet.height/3
+                                height: parent.height/3
                                 width: height
 
                                 fillMode: Image.PreserveAspectFit
@@ -241,6 +240,8 @@ Item {
         x: players.visibleArea.xPosition * players.width
 
         color: "#33B5E5"
+
+        visible: playerContain.model.count > 2
     }
 
 
@@ -254,9 +255,9 @@ Item {
         onBackspace: parent.dynToolbar.deleteLast()
     }
 
-    function positionViewAtIndex(index,mode)
+    function positionViewAtIndex(index)
     {
-        players.positionViewAtIndex(index,mode);
+        players.positionViewAtIndex(index,ListView.Beginning);
     }
 }
 

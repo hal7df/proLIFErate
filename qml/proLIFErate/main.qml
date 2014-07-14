@@ -9,7 +9,7 @@ Rectangle {
     height: 800
     color: "#e7ece6"
 
-    Display {
+    /*Display {
         id: player1
         anchors { bottom: parent.bottom; right: parent.right; top: toolbar.bottom; left: parent.left }
         playerNum: 1
@@ -20,7 +20,7 @@ Rectangle {
         anchors { bottom: toolbar.top; top: parent.top; right: parent.right; left: parent.left }
         playerNum: 2
         rotation: 180
-    }
+    }*/
 
     CounterView {
         id: bottomScreen
@@ -33,9 +33,10 @@ Rectangle {
         }
 
         model: players
+        dynToolbar: toolbar
         otherViewAt: topScreen.playerAt
 
-        Component.onCompleted: positionViewAtIndex(0,ListView.Beginning)
+        Component.onCompleted: positionViewAtIndex(0)
     }
 
     CounterView {
@@ -48,11 +49,12 @@ Rectangle {
             left: parent.left
         }
 
+        dynToolbar: toolbar
         model: players
         otherViewAt: bottomScreen.playerAt
         rotation: 180
 
-        Component.onCompleted: positionViewAtIndex(1,ListView.Beginning)
+        Component.onCompleted: positionViewAtIndex(1)
     }
 
     DynamicToolbar {
@@ -103,7 +105,9 @@ Rectangle {
             source: "add"
 
             onClicked: {
-                players.append({"name": "player", "life":20, "poison":0, "active": true});
+                players.append({"name": "Player "+(players.count+1),
+                                   counters: [{"counterName": "Life", "lCount": 20, "edit": false}, {"counterName": "Poison", "lCount": 0, "edit": false}],
+                                   "active": true});
             }
         }
     }
@@ -113,17 +117,18 @@ Rectangle {
 
         ListElement {
             name: "Player 1"
+            active: true
 
             counters: [
                 ListElement {
-                    name: "Life"
-                    count: 20
-                    editable: false
+                    counterName: "Life"
+                    lCount: 20
+                    edit: false
                 } ,
                 ListElement {
-                    name: "Poison"
-                    count: 0
-                    editable: false
+                    counterName: "Poison"
+                    lCount: 0
+                    edit: false
                 }
 
             ]
@@ -131,6 +136,7 @@ Rectangle {
 
         ListElement {
             name: "Player 2"
+            active: true
 
             counters: [
                 ListElement {
