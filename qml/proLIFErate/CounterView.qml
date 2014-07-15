@@ -26,24 +26,39 @@ Item {
 
         delegate: playerDelegate
 
-        Component.onCompleted: currentIndex = 1
+        Component.onCompleted: positionViewAtIndex(viewer-1,ListView.Beginning)
 
         onCurrentIndexChanged: {
             if (currentIndex == playerContain.otherViewAt)
             {
+                console.log("Repositioning viewer",viewer,"due to conflicting viewer");
                 if (lastMovingDirection > 0)
                 {
+                    console.log("Viewer last moving forward...");
                     if (currentIndex == count-1)
+                    {
+                        console.log("Repositioning viewer to previous item");
                         positionViewAtIndex(currentIndex-1,ListView.Beginning);
+                    }
                     else
+                    {
+                        console.log("Repositioning viewer to next item");
                         positionViewAtIndex(currentIndex+1,ListView.Beginning);
+                    }
                 }
                 else
                 {
+                    console.log("Viewer last moving backward...");
                     if (currentIndex == 0)
+                    {
+                        console.log("Repositioning viewer to previous item");
                         positionViewAtIndex(currentIndex+1,ListView.Beginning);
+                    }
                     else
+                    {
+                        console.log("Repositioning viewer to next item");
                         positionViewAtIndex(currentIndex-1,ListView.Beginning);
+                    }
                 }
             }
         }
