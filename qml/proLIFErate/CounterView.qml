@@ -3,6 +3,7 @@ import QtQuick 2.0
 Item {
     id: playerContain
 
+    property int viewer
     property DynamicToolbar dynToolbar
     property ListModel model
     property int otherViewAt //to make sure two views don't settle on the same player
@@ -24,6 +25,8 @@ Item {
         interactive: model.count > 2
 
         delegate: playerDelegate
+
+        Component.onCompleted: currentIndex = 1
 
         onCurrentIndexChanged: {
             if (currentIndex == playerContain.otherViewAt)
@@ -131,70 +134,64 @@ Item {
                     margins: 2
                 }
 
-                Flickable {
-                    id: counterScroll
+                height: players.height-nameBack.height-2
+
+                GridView {
+                    id: counters
 
                     anchors.fill: parent
 
-                    flickableDirection: Flickable.HorizontalFlick
+                    flickableDirection: Flickable.VerticalFlick
                     boundsBehavior: Flickable.StopAtBounds
+                    snapMode: GridView.SnapOneRow
 
-                    contentHeight: counters.height
+                    clip: true
+                    cellWidth: (width/2)-2
+                    cellHeight: height
+                    model: playerContain.model.get(index).counters
+                    property int rootIndex: index
 
-                    Grid {
-                        id: counters
+                    delegate: CounterBase {
+                            id: counter
 
-                        width: parent.width
+                            width: counters.cellWidth
+                            height: counters.cellHeight
 
-                        columns: 2
-                        spacing: 2
+                            name: counterName
+                            count: lCount
+                            editable: edit
 
-                        Repeater {
-                            id: counterCreate
+                            onCountChanged: playerContain.model.get(counters.rootIndex).counters.setProperty(index,"lCount",count)
+                            onNameChanged: playerContain.model.get(counters.rootIndex).counters.setProperty(index,"counterName",name)
 
-                            property int rootIndex: index
-
-                            model: playerContain.model.get(index).counters
-
-                            CounterBase {
-                                id: counter
-
-                                width: (counters.width/2)-1
-                                height: counters.height-2
-
-                                name: counterName
-                                count: lCount
-                                editable: edit
-
-                                onCountChanged: playerContain.model.get(counterCreate.rootIndex).counters.setProperty(index,"lCount",count)
-                                onNameChanged: playerContain.model.get(counterCreate.rootIndex).counters.setProperty(index,"counterName",name)
-
-                                onClicked: {
-                                    if (rqID == 0)
-                                        playerContain.dynToolbar.requestText(name,counter);
-                                    else if (rqID == 1)
-                                    {
-                                        if (playerContain.dynToolbar.requestViewer(count,playerContain.rotation,counter))
-                                            numpad.visible = true;
-                                    }
+                            onClicked: {
+                                if (rqID == 0)
+                                    playerContain.dynToolbar.requestText(name,counter);
+                                else if (rqID == 1)
+                                {
+                                    if (playerContain.dynToolbar.requestViewer(count,playerContain.rotation,counter))
+                                        numpad.visible = true;
                                 }
-
-                                onReceived: numpad.visible = false
                             }
+
+                            onReceived: numpad.visible = false
+                            onDeleteCounter: playerContain.model.get(counters.rootIndex).counters.remove(index)
+
+                            Component.onCompleted: console.log("Counter height:",height)
                         }
 
-                        Rectangle {
+                    footer: Rectangle {
                             id: addCounter
 
                             width: (counters.width/2)-1
-                            height: counters.height
+                            height: counterContain.height - 2
 
                             color: "#00000000"
-                            border.color: "#bbeeeeee"
+                            border.color: "#bbcccccc"
 
                             states: State {
                                 when:  addClick.pressed
-                                PropertyChanges { target: addCounter; color: "#bbeeeeee" }
+                                PropertyChanges { target: addCounter; color: "#33B5E5" }
                             }
 
                             Image {
@@ -228,7 +225,6 @@ Item {
                 }
             }
         }
-    }
 
     Rectangle {
         id: playerIndicator
@@ -257,7 +253,17 @@ Item {
 
     function positionViewAtIndex(index)
     {
-        players.positionViewAtIndex(index,ListView.Beginning);
+        players.positionViewAtIndex(index,ListView.Contain);
+    }
+
+    function positionViewAtEnd()
+    {
+        players.positionViewAtEnd();
+    }
+
+    function positionViewAtBeginning()
+    {
+        players.positionViewAtBeginning();
     }
 }
 

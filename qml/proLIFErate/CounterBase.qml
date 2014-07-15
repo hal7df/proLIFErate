@@ -7,13 +7,14 @@ Rectangle {
     property int count: 0
     property int stRqID     //Property to hold what is being edited
     property bool upDisabled: false
-    property bool downDisabled: false
+    property bool downDisabled: count == 0
     property bool disabled: false
     property bool editable: true
 
     signal clickIntercept  //Signal that is fired whenever this object receives a click.
     signal clicked (int rqID)  //Signal that is fired when there is an edit property request.
     signal received //Signal that is fired when the counter receives data from the editor (numpad only)
+    signal deleteCounter
 
     /** rqID values
       * 0: change name
@@ -80,11 +81,27 @@ Rectangle {
                 anchors.fill: parent
 
                 onClicked: {
-                    if (editable)
+                    if (counterBase.editable)
                         counterBase.clicked(0)
                 }
 
                 Component.onCompleted: clicked.connect(counterBase.clickIntercept)
+            }
+
+            IconWidget {
+                id: delCount
+
+                anchors {
+                    top: parent.top;
+                    right: parent.right;
+                    bottom: parent.bottom
+                    margins: 2
+                }
+
+                source: "delete"
+                visible: counterBase.editable
+
+                Component.onCompleted: clicked.connect(counterBase.deleteCounter)
             }
         }
     }

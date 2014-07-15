@@ -32,11 +32,14 @@ Rectangle {
             left: parent.left
         }
 
+        viewer: 1
         model: players
         dynToolbar: toolbar
         otherViewAt: topScreen.playerAt
 
-        Component.onCompleted: positionViewAtIndex(0)
+        Component.onCompleted: {
+            console.log("Bottom viewer completed");
+        }
     }
 
     CounterView {
@@ -49,12 +52,15 @@ Rectangle {
             left: parent.left
         }
 
+        viewer: 2
         dynToolbar: toolbar
         model: players
         otherViewAt: bottomScreen.playerAt
         rotation: 180
 
-        Component.onCompleted: positionViewAtIndex(1)
+        Component.onCompleted: {
+            console.log("Top viewer completed");
+        }
     }
 
     DynamicToolbar {
