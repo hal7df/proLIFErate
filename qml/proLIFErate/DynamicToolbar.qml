@@ -74,6 +74,7 @@ Toolbar {
         visible: parent.editing
 
         color: "#ffffff"
+        clip: true
 
         TextInput {
             id: input

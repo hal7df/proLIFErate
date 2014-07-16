@@ -9,13 +9,21 @@ Item {
     property int otherViewAt //to make sure two views don't settle on the same player
     readonly property alias playerAt: players.currentIndex
 
+    readonly property alias delegateWidth: playerContain.width
+    readonly property alias delegateHeight: playerContain.height
+
     ListView {
         id: players
 
         property real lastMovingDirection
         property bool stopped: false
 
+        property alias delegateWidth: players.width
+        property alias delegateHeight: players.height
+
         anchors.fill: parent
+        width: parent.width
+        height: parent.height
 
         orientation: ListView.Horizontal
         snapMode: ListView.SnapOneItem
@@ -23,8 +31,6 @@ Item {
 
         boundsBehavior: Flickable.StopAtBounds
         interactive: model.count > 2
-
-        delegate: playerDelegate
 
         Component.onCompleted: positionViewAtIndex(viewer-1,ListView.Beginning)
 
@@ -78,6 +84,8 @@ Item {
                 stopped = true;
             }
         }
+
+        delegate: playerDelegate
     }
 
     Component {
@@ -86,8 +94,8 @@ Item {
         Item {
             id: player
 
-            width: players.width
-            height: players.height
+            width: ListView.view.width == 0 ? 480 : ListView.view.width
+            height: ListView.view.height == 0 ? 360 : ListView.view.height
 
             Rectangle {
                 id: nameBack
@@ -161,7 +169,7 @@ Item {
                     snapMode: GridView.SnapOneRow
 
                     clip: true
-                    cellWidth: (width/2)-2
+                    cellWidth: width/2
                     cellHeight: height
                     model: playerContain.model.get(index).counters
                     property int rootIndex: index
@@ -191,15 +199,13 @@ Item {
 
                             onReceived: numpad.visible = false
                             onDeleteCounter: playerContain.model.get(counters.rootIndex).counters.remove(index)
-
-                            Component.onCompleted: console.log("Counter height:",height)
                         }
 
                     footer: Rectangle {
                             id: addCounter
 
-                            width: (counters.width/2)-1
-                            height: counterContain.height - 2
+                            width: counters.width
+                            height: counters.height
 
                             color: "#00000000"
                             border.color: "#bbcccccc"
@@ -239,7 +245,7 @@ Item {
                     }
                 }
             }
-        }
+    }
 
     Rectangle {
         id: playerIndicator
