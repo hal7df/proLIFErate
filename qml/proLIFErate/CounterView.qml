@@ -7,10 +7,12 @@ Item {
     property DynamicToolbar dynToolbar
     property ListModel model
     property int otherViewAt //to make sure two views don't settle on the same player
-    readonly property alias playerAt: players.currentIndex
+    readonly property int playerAt: players.indexAt(players.contentX,players.contentY)
 
     readonly property alias delegateWidth: playerContain.width
     readonly property alias delegateHeight: playerContain.height
+
+    Component.onCompleted: playerAtChanged.connect(players.conflictingViewer)
 
     ListView {
         id: players
@@ -20,6 +22,8 @@ Item {
 
         property alias delegateWidth: players.width
         property alias delegateHeight: players.height
+
+        signal conflictingViewer
 
         anchors.fill: parent
         width: parent.width
@@ -32,10 +36,10 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         interactive: model.count > 2
 
-        Component.onCompleted: positionViewAtIndex(viewer-1,ListView.Beginning)
+        Component.onCompleted: positionViewAtIndex(viewer-1,ListView.Beginning);
 
-        onCurrentIndexChanged: {
-            if (currentIndex == playerContain.otherViewAt)
+        onConflictingViewer: {
+            if (playerContain.playerAt == playerContain.otherViewAt)
             {
                 console.log("Repositioning viewer",viewer,"due to conflicting viewer");
                 if (lastMovingDirection > 0)
@@ -91,11 +95,22 @@ Item {
     Component {
         id: playerDelegate
 
-        Item {
+        Rectangle {
             id: player
+
+            property bool loss: (counters.get(0).lCount == 0) || (counters.get(1).lCount >= 10)
 
             width: ListView.view.width == 0 ? 480 : ListView.view.width
             height: ListView.view.height == 0 ? 360 : ListView.view.height
+
+            color: "#e7ece6"
+
+            onLossChanged: {
+                if (loss)
+                    color = "#ff4444";
+            }
+
+            ColorAnimation on color { to: "#e7ece6"; running: player.color != "#e7ece6"; duration: 1500 }
 
             Rectangle {
                 id: nameBack
@@ -160,7 +175,7 @@ Item {
                 height: players.height-nameBack.height-2
 
                 GridView {
-                    id: counters
+                    id: counterDisplay
 
                     anchors.fill: parent
 
@@ -171,21 +186,22 @@ Item {
                     clip: true
                     cellWidth: width/2
                     cellHeight: height
-                    model: playerContain.model.get(index).counters
-                    property int rootIndex: index
+                    model: counters
 
                     delegate: CounterBase {
                             id: counter
 
-                            width: counters.cellWidth
-                            height: counters.cellHeight
+                            width: counterDisplay.cellWidth
+                            height: counterDisplay.cellHeight
 
                             name: counterName
                             count: lCount
                             editable: edit
 
-                            onCountChanged: playerContain.model.get(counters.rootIndex).counters.setProperty(index,"lCount",count)
-                            onNameChanged: playerContain.model.get(counters.rootIndex).counters.setProperty(index,"counterName",name)
+                            disabled: player.loss
+
+                            onCountChanged: counterDisplay.model.setProperty(index,"lCount",count)
+                            onNameChanged: counterDisplay.model.setProperty(index,"counterName",name)
 
                             onClicked: {
                                 if (rqID == 0)
@@ -198,14 +214,14 @@ Item {
                             }
 
                             onReceived: numpad.visible = false
-                            onDeleteCounter: playerContain.model.get(counters.rootIndex).counters.remove(index)
+                            onDeleteCounter: counterDisplay.model.remove(index)
                         }
 
                     footer: Rectangle {
                             id: addCounter
 
-                            width: counters.width
-                            height: counters.height
+                            width: counterDisplay.width
+                            height: counterDisplay.height
 
                             color: "#00000000"
                             border.color: "#bbcccccc"
@@ -238,7 +254,7 @@ Item {
                                 anchors.fill: parent
 
                                 onClicked: {
-                                    playerContain.model.get(index).counters.append({"counterName": "Unnamed", "lCount": 0, "edit": true});
+                                    counterDisplay.model.append({"counterName": "Unnamed", "lCount": 0, "edit": true});
                                 }
                             }
                         }
@@ -272,19 +288,12 @@ Item {
         onBackspace: parent.dynToolbar.deleteLast()
     }
 
-    function positionViewAtIndex(index)
+    function flashPlayer (index)
     {
-        players.positionViewAtIndex(index,ListView.Contain);
-    }
+        players.currentIndex = index;
+        players.positionViewAtIndex(index,ListView.Beginning);
 
-    function positionViewAtEnd()
-    {
-        players.positionViewAtEnd();
-    }
-
-    function positionViewAtBeginning()
-    {
-        players.positionViewAtBeginning();
+        players.currentItem.color = "#66cc00";
     }
 }
 

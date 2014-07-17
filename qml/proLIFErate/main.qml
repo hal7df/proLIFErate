@@ -9,19 +9,6 @@ Rectangle {
     height: 800
     color: "#e7ece6"
 
-    /*Display {
-        id: player1
-        anchors { bottom: parent.bottom; right: parent.right; top: toolbar.bottom; left: parent.left }
-        playerNum: 1
-    }
-
-    Display {
-        id: player2
-        anchors { bottom: toolbar.top; top: parent.top; right: parent.right; left: parent.left }
-        playerNum: 2
-        rotation: 180
-    }*/
-
     CounterView {
         id: bottomScreen
 
@@ -67,17 +54,17 @@ Rectangle {
             source: "restart"
 
             onClicked: {
-                var selectPlayer
+                var selectPlayer;
+                var playerShown;
 
-                player1.reset();
-                player2.reset();
+                players.reset();
 
-                selectPlayer = Math.floor((Math.random()*10)+1);
+                selectPlayer = Math.floor((Math.random()*players.count));
 
-                if ((selectPlayer % 2) == 1)
-                    player1.color = "#66cc00";
+                if (topScreen.playerAt == selectPlayer) for a counter application:
+                    topScreen.flashPlayer(selectPlayer);
                 else
-                    player2.color = "#66cc00"
+                    bottomScreen.flashPlayer(selectPlayer);
             }
         }
 
@@ -88,12 +75,12 @@ Rectangle {
             onClicked: {
                 var selectPlayer
 
-                selectPlayer = Math.floor((Math.random()*10)+1);
+                selectPlayer = Math.floor((Math.random()*players.count));
 
-                if ((selectPlayer % 2) == 1)
-                    player1.color = "#66cc00";
+                if (topScreen.playerAt == selectPlayer)
+                    topScreen.flashPlayer(selectPlayer);
                 else
-                    player2.color = "#66cc00"
+                    bottomScreen.flashPlayer(selectPlayer);
             }
         }
 
@@ -149,6 +136,20 @@ Rectangle {
                 }
 
             ]
+        }
+
+        function reset ()
+        {
+            for (var x = 0; x < count; x++)
+            {
+                for (var y = 0; y < get(x).counters.count; y++)
+                {
+                    if (get(x).counters.get(y).counterName == "Life")
+                        get(x).counters.setProperty(y,"lCount",20);
+                    else
+                        get(x).counters.setProperty(y,"lCount",0);
+                }
+            }
         }
     }
 
