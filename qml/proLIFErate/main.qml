@@ -23,6 +23,10 @@ Rectangle {
         model: players
         dynToolbar: toolbar
         otherViewAt: topScreen.playerAt
+
+        Connections {
+            onPlayerAtChanged: topScreen.otherViewAt = bottomScreen.playerAt
+        }
     }
 
     CounterView {
@@ -40,6 +44,10 @@ Rectangle {
         model: players
         otherViewAt: bottomScreen.playerAt
         rotation: 180
+
+        Connections {
+            onPlayerAtChanged: bottomScreen.otherViewAt = topScreen.playerAt
+        }
     }
 
     DynamicToolbar {
@@ -61,7 +69,7 @@ Rectangle {
 
                 selectPlayer = Math.floor((Math.random()*players.count));
 
-                if (topScreen.playerAt == selectPlayer) for a counter application:
+                if (topScreen.playerAt == selectPlayer)
                     topScreen.flashPlayer(selectPlayer);
                 else
                     bottomScreen.flashPlayer(selectPlayer);
@@ -93,6 +101,11 @@ Rectangle {
                 players.append({"name": "Player "+(players.count+1),
                                    counters: [{"counterName": "Life", "lCount": 20, "edit": false}, {"counterName": "Poison", "lCount": 0, "edit": false}],
                                    "active": true});
+            }
+
+            onPressAndHold: {
+                if (players.count > 2)
+                    players.remove(players.count-1);
             }
         }
     }

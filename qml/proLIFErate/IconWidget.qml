@@ -11,6 +11,7 @@ Rectangle {
     property bool disabled: false
     property alias iconRotation: image.rotation
     signal clicked
+    signal pressAndHold
 
     color: "#00000000"
     width: height
@@ -55,7 +56,10 @@ Rectangle {
     MouseArea {
         id: button
         anchors.fill: parent
-        Component.onCompleted: clicked.connect(parent.clicked);
+        Component.onCompleted: {
+            pressAndHold.connect(parent.pressAndHold);
+            clicked.connect(parent.clicked);
+        }
         onClicked: {
             if (parent.toggle && !parent.disabled)
             {

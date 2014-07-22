@@ -7,23 +7,23 @@ Item {
     property DynamicToolbar dynToolbar
     property ListModel model
     property int otherViewAt //to make sure two views don't settle on the same player
-    readonly property int playerAt: players.indexAt(players.contentX,players.contentY)
+    readonly property alias playerAt: players.displayIndex
 
     readonly property alias delegateWidth: playerContain.width
     readonly property alias delegateHeight: playerContain.height
 
-    Component.onCompleted: playerAtChanged.connect(players.conflictingViewer)
+    onOtherViewAtChanged: {
+        console.log("Other view now at:(",viewer,")",otherViewAt);
+    }
 
     ListView {
         id: players
 
         property real lastMovingDirection
-        property bool stopped: false
+        property int displayIndex: players.indexAt(players.contentX+width/2,players.contentY)
 
         property alias delegateWidth: players.width
         property alias delegateHeight: players.height
-
-        signal conflictingViewer
 
         anchors.fill: parent
         width: parent.width
@@ -38,58 +38,51 @@ Item {
 
         Component.onCompleted: positionViewAtIndex(viewer-1,ListView.Beginning);
 
-        onConflictingViewer: {
-            if (playerContain.playerAt == playerContain.otherViewAt)
+        onDisplayIndexChanged: {
+            if (displayIndex == playerContain.otherViewAt)
             {
-                console.log("Repositioning viewer",viewer,"due to conflicting viewer");
+                console.log("Viewer",viewer,"index:",displayIndex);
+                console.log("Other viewer index:",parent.otherViewAt);
+
                 if (lastMovingDirection > 0)
                 {
-                    console.log("Viewer last moving forward...");
-                    if (currentIndex == count-1)
+                    if (displayIndex == count-1)
                     {
-                        console.log("Repositioning viewer to previous item");
-                        positionViewAtIndex(currentIndex-1,ListView.Beginning);
+                        positionViewAtIndex(displayIndex-1,ListView.Beginning);
+                        displayIndex--;
                     }
                     else
                     {
-                        console.log("Repositioning viewer to next item");
-                        positionViewAtIndex(currentIndex+1,ListView.Beginning);
+                        positionViewAtIndex(displayIndex+1,ListView.Beginning);
+                        displayIndex++;
                     }
                 }
                 else
                 {
-                    console.log("Viewer last moving backward...");
-                    if (currentIndex == 0)
+                    if (displayIndex == 0)
                     {
-                        console.log("Repositioning viewer to previous item");
-                        positionViewAtIndex(currentIndex+1,ListView.Beginning);
+                        positionViewAtIndex(displayIndex+1,ListView.Beginning);
+                        displayIndex++;
                     }
                     else
                     {
-                        console.log("Repositioning viewer to next item");
-                        positionViewAtIndex(currentIndex-1,ListView.Beginning);
+                        positionViewAtIndex(displayIndex-1,ListView.Beginning);
+                        displayIndex--;
                     }
                 }
             }
+
+            console.log("View",viewer,"at:",playerAt);
         }
 
         onHorizontalVelocityChanged: {
-            if ((horizontalVelocity*lastMovingDirection) > 0)
-            {
+            if (horizontalVelocity != 0)
                 lastMovingDirection = horizontalVelocity;
-            }
-            else if (stopped)
-            {
-                stopped = false;
-                lastMovingDirection = horizontalVelocity;
-            }
-            else if (horizontalVelocity == 0)
-            {
-                stopped = true;
-            }
         }
 
         delegate: playerDelegate
+
+        Behavior on contentX { NumberAnimation {} }
     }
 
     Component {
@@ -99,6 +92,7 @@ Item {
             id: player
 
             property bool loss: (counters.get(0).lCount == 0) || (counters.get(1).lCount >= 10)
+            property variant counterList: counters
 
             width: ListView.view.width == 0 ? 480 : ListView.view.width
             height: ListView.view.height == 0 ? 360 : ListView.view.height
@@ -186,7 +180,7 @@ Item {
                     clip: true
                     cellWidth: width/2
                     cellHeight: height
-                    model: counters
+                    model: player.counterList
 
                     delegate: CounterBase {
                             id: counter
@@ -215,6 +209,11 @@ Item {
 
                             onReceived: numpad.visible = false
                             onDeleteCounter: counterDisplay.model.remove(index)
+
+                            Connections {
+                                target: player.counterList
+                                onDataChanged: count = player.counterList.get(index).lCount
+                            }
                         }
 
                     footer: Rectangle {
