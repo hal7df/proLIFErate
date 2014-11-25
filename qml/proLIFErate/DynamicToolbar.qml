@@ -83,7 +83,7 @@ Toolbar {
             width: parent.width
 
             horizontalAlignment: Text.AlignHCenter
-            font.pointSize: parent.height*0.6
+            font.pixelSize: parent.height*0.8
             readOnly: dynamicToolbar.editType != 0
             selectByMouse: !readOnly
 

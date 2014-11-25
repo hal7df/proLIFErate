@@ -47,7 +47,7 @@ Rectangle {
                 anchors.centerIn: parent
 
                 text: counterBase.count
-                font.pointSize: parent.height*0.3
+                font.pixelSize: parent.height*0.5
             }
 
             MouseArea {
@@ -72,7 +72,7 @@ Rectangle {
                 anchors.centerIn: parent
 
                 text: counterBase.name
-                font.pointSize: parent.height*0.5
+                font.pixelSize: parent.height*0.9
             }
 
             MouseArea {
