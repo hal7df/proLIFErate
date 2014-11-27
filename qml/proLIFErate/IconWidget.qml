@@ -16,9 +16,9 @@ Rectangle {
     color: "#00000000"
     width: height
     states: [ State {
-        name: "activated"; when: button.pressed && !toggle && !disabled
-        PropertyChanges { target: iconWidget; color: pressedColor }
-    },
+            name: "activated"; when: button.pressed && !toggle && !disabled
+            PropertyChanges { target: iconWidget; color: pressedColor }
+        },
         State {
             name: "toggleOn"; when: toggled
             PropertyChanges { target: iconWidget; color: pressedColor }

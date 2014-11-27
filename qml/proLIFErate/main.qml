@@ -7,7 +7,7 @@ Rectangle {
 
     width: 480
     height: 800
-    color: "#e7ece6"
+    color: appColor
 
     CounterView {
         id: bottomScreen
@@ -53,6 +53,9 @@ Rectangle {
     DynamicToolbar {
         id: toolbar
         anchors.verticalCenter: parent.verticalCenter
+        color: appColor
+
+        z: 30
 
         IconWidget {
             id: restartGame
@@ -91,22 +94,55 @@ Rectangle {
                     bottomScreen.flashPlayer(selectPlayer);
             }
         }
+    }
 
-        IconWidget {
-            id: addPlayer
-            anchors { top: parent.top; bottom: parent.bottom; right: parent.right; rightMargin: (parent.width/10) }
-            source: "add"
+    NewButton {
+        id: newButton
 
-            onClicked: {
-                players.append({"name": "Player "+(players.count+1),
-                                   counters: [{"counterName": "Life", "lCount": 20, "edit": false}, {"counterName": "Poison", "lCount": 0, "edit": false}],
-                                   "active": true});
-            }
+        anchors {
+            right: parent.right
+        }
 
-            onPressAndHold: {
-                if (players.count > 2)
-                    players.remove(players.count-1);
-            }
+        color: appColor
+        anchors.verticalCenter: toolbar.verticalCenter
+        anchors.rightMargin: (width/4)
+        z: 31
+
+        visible: !toolbar.editing
+
+        onClicked: {
+            players.append({"name": "Player "+(players.count+1),
+                               counters: [{"counterName": "Life", "lCount": 20, "edit": false}, {"counterName": "Poison", "lCount": 0, "edit": false}],
+                               "active": true});
+
+            console.log("Clicked");
+        }
+
+        onPressAndHold: {
+            if (players.count > 2)
+                players.remove(players.count-1);
+
+            console.log("Press and Hold");
+        }
+    }
+
+    Rectangle {
+        id: toolbarShadow
+
+        anchors {
+            right: parent.right
+            verticalCenter: toolbar.verticalCenter
+            left: toolbar.left
+        }
+
+        height: toolbar.height+(toolbar.height/5)
+        z: 29
+
+        gradient: Gradient {
+            GradientStop {position: 0.0; color: "#00000000"}
+            GradientStop {position: 0.083; color: "#33000000"}
+            GradientStop {position: 0.917; color: "#33000000"}
+            GradientStop {position: 1.0; color: "#00000000"}
         }
     }
 

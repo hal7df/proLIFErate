@@ -1,6 +1,6 @@
 import QtQuick 2.0
 
-Rectangle {
+Item {
     id: counterBase
 
     property string name
@@ -23,23 +23,25 @@ Rectangle {
       * The actual edit property request needs to be handled by the parent.
       */
 
-    color: "#00000000"
-
     onClicked: stRqID = rqID
 
     Rectangle {
         id: counterDispContainer
 
-        anchors { top: parent.top; right: parent.right; left: parent.left; margins: 2 }
-        height: parent.height*0.62
+        anchors { top: parent.top; right: parent.right; left: parent.left; bottom: parent.bottom; margins:2; bottomMargin: 4 }
 
-        border { color: "#000000"; width: 2 }
-        color: "#00000000"
+        color: "#ffffff"
 
         Item {
             id: countContain
 
-            anchors.fill: parent
+            anchors {
+                top: labelContain.bottom
+                right: parent.right
+                left: parent.left
+            }
+
+            height: (0.75*parent.height)-labelContain.height
 
             Text {
                 id: showCount
@@ -72,7 +74,7 @@ Rectangle {
                 anchors.centerIn: parent
 
                 text: counterBase.name
-                font.pixelSize: parent.height*0.9
+                font.pixelSize: parent.height*0.75
             }
 
             MouseArea {
@@ -104,41 +106,62 @@ Rectangle {
                 Component.onCompleted: clicked.connect(counterBase.deleteCounter)
             }
         }
+
+        Grid {
+            id: buttonAlign
+
+            anchors {
+                top: countContain.bottom
+                right: parent.right
+                left: parent.left
+                bottom: parent.bottom
+            }
+
+            columns: 2
+            spacing: 2
+
+            IconWidget {
+                id: up
+
+                height: parent.height
+                width: (parent.width/2)-1
+
+                source: "up"
+
+                Component.onCompleted: clicked.connect(counterBase.clickIntercept)
+                onClicked: counterBase.count++
+                disabled: counterBase.upDisabled || counterBase.disabled
+            }
+
+            IconWidget {
+                id: down
+
+                height: parent.height
+                width: (parent.width/2)-1
+
+                source: "down"
+
+                Component.onCompleted: clicked.connect(counterBase.clickIntercept)
+                onClicked: counterBase.count--
+                disabled: counterBase.downDisabled || counterBase.disabled
+            }
+        }
     }
 
-    Grid {
-        id: buttonAlign
+    Rectangle {
+        id: perspective
 
-        anchors { top: counterDispContainer.bottom; right: parent.right; left: parent.left; bottom: parent.bottom; topMargin: 2; bottomMargin: 2 }
-
-        columns: 2
-        spacing: 2
-
-        IconButton {
-            id: up
-
-            height: parent.height
-            width: (parent.width/2)-1
-
-            source: "up"
-
-            Component.onCompleted: clicked.connect(counterBase.clickIntercept)
-            onClicked: counterBase.count++
-            disabled: counterBase.upDisabled || counterBase.disabled
+        anchors {
+            top: counterDispContainer.bottom
+            right: counterDispContainer.right
+            left: counterDispContainer.left
+            bottom: parent.bottom
+            bottomMargin: 2
+            leftMargin: 2
+            rightMargin: 2
         }
 
-        IconButton {
-            id: down
-
-            height: parent.height
-            width: (parent.width/2)-1
-
-            source: "down"
-
-            Component.onCompleted: clicked.connect(counterBase.clickIntercept)
-            onClicked: counterBase.count--
-            disabled: counterBase.downDisabled || counterBase.disabled
-        }
+        color: "#cccccc"
     }
 
     function receive (val)
