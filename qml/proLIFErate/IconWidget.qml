@@ -13,7 +13,7 @@ Rectangle {
     signal clicked
     signal pressAndHold
 
-    anchors.margins: height/8
+    anchors.margins: parent.height/8
 
     color: "#00000000"
     width: height

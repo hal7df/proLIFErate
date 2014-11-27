@@ -38,6 +38,7 @@ Item {
 
             anchors.centerIn: parent
             width: (parent.width/Math.sqrt(2))
+            height: width
 
             source: getIconResolution()
             fillMode: Image.PreserveAspectFit
@@ -49,9 +50,9 @@ Item {
                     if (height < 48)
                         return "images/mdpi/ic_"+buttonContain.iconSource+".png";
                     else if (height >= 48 && height < 64)
-                        return "images/hdpi/ic_"+parent.iconSource+".png";
+                        return "images/hdpi/ic_"+buttonContain.iconSource+".png";
                     else
-                        return "images/xhdpi/ic_"+parent.iconSource+".png";
+                        return "images/xhdpi/ic_"+buttonContain.iconSource+".png";
                 else
                     return parent.source;
             }

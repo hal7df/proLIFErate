@@ -113,15 +113,11 @@ Rectangle {
             players.append({"name": "Player "+(players.count+1),
                                counters: [{"counterName": "Life", "lCount": 20, "edit": false}, {"counterName": "Poison", "lCount": 0, "edit": false}],
                                "active": true});
-
-            console.log("Clicked");
         }
 
         onPressAndHold: {
             if (players.count > 2)
                 players.remove(players.count-1);
-
-            console.log("Press and Hold");
         }
     }
 

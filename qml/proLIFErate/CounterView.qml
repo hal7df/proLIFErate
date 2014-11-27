@@ -20,10 +20,7 @@ Item {
         id: players
 
         property real lastMovingDirection
-        property int displayIndex: players.indexAt(players.contentX+width/2,players.contentY)
-
-        property alias delegateWidth: players.width
-        property alias delegateHeight: players.height
+        property int displayIndex: indexAt(contentX,contentY)
 
         anchors.fill: parent
         width: parent.width
@@ -36,7 +33,9 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         interactive: model.count > 2
 
-        Component.onCompleted: positionViewAtIndex(viewer-1,ListView.Beginning);
+        Component.onCompleted: {
+            positionViewAtIndex(parent.viewer-1,ListView.Beginning)
+        }
 
         onDisplayIndexChanged: {
             if (displayIndex == playerContain.otherViewAt)
