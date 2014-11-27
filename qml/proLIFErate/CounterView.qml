@@ -119,7 +119,6 @@ Item {
                 height: parent.height/6
 
                 color: "#00000000"
-                border { color: "#00000000"; width: 2 }
 
                 Text {
                     id: playerName
@@ -141,9 +140,23 @@ Item {
                         if (playerContain.dynToolbar.requestText(playerName.text,nameBack))
                         {
                             nameBack.color = "#ffffff";
-                            nameBack.border.color = "#000000";
                         }
                     }
+                }
+
+                Rectangle {
+                    id: namePerspective
+
+                    anchors {
+                        left: nameBack.left
+                        right: nameBack.right
+                        top: nameBack.bottom
+                    }
+
+                    height: 2
+
+                    color: "#cccccc"
+                    visible: nameBack.color == "#ffffff"
                 }
 
                 function receive (value)
@@ -216,34 +229,48 @@ Item {
                             }
                         }
 
-                    footer: Rectangle {
+                    footer: Item {
                             id: addCounter
 
                             width: counterDisplay.width
                             height: counterDisplay.height
 
-                            color: "#00000000"
-                            border.color: "#bbcccccc"
-
-                            states: State {
-                                when:  addClick.pressed
-                                PropertyChanges { target: addCounter; color: "#33B5E5" }
-                            }
-
-                            Image {
+                            Rectangle {
                                 anchors.centerIn: parent
 
-                                height: parent.height/3
+                                height: (parent.height/3)*Math.sqrt(2)
                                 width: height
+                                radius: width/2
 
-                                fillMode: Image.PreserveAspectFit
-                                source: {
-                                    if (height < 48)
-                                        return "images/mdpi/ic_new.png";
-                                    else if (height >= 48 && height < 64)
-                                        return "images/hdpi/ic_new.png";
-                                    else
-                                        return "images/xhdpi/ic_new.png";
+                                color: addClick.pressed ? "#FF4444" : "#00000000"
+
+                                Image {
+                                    anchors.centerIn: parent
+
+                                    height: addCounter.height/3
+                                    width: height
+
+                                    fillMode: Image.PreserveAspectFit
+                                    source: {
+                                        if (addClick.pressed)
+                                        {
+                                            if (height < 48)
+                                                return "images/mdpi/ic_add.png";
+                                            else if (height >= 48 && height < 64)
+                                                return "images/hdpi/ic_add.png";
+                                            else
+                                                return "images/xhdpi/ic_add.png";
+                                        }
+                                        else
+                                        {
+                                            if (height < 48)
+                                                return "images/mdpi/ic_new.png";
+                                            else if (height >= 48 && height < 64)
+                                                return "images/hdpi/ic_new.png";
+                                            else
+                                                return "images/xhdpi/ic_new.png";
+                                        }
+                                    }
                                 }
                             }
 

@@ -7,7 +7,6 @@ Rectangle {
 
     width: 480
     height: 800
-    color: appColor
 
     CounterView {
         id: bottomScreen

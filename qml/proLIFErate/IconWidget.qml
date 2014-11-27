@@ -3,7 +3,7 @@ import QtQuick 2.0
 Rectangle {
     id: iconWidget
 
-    property color pressedColor: "#33B5E5"
+    property color pressedColor: "#66dddddd"
     property string source: ""
     property bool srcAbsolute: false
     property bool toggle: false
@@ -12,6 +12,8 @@ Rectangle {
     property alias iconRotation: image.rotation
     signal clicked
     signal pressAndHold
+
+    anchors.margins: height/8
 
     color: "#00000000"
     width: height
