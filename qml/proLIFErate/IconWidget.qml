@@ -58,6 +58,9 @@ Rectangle {
     MouseArea {
         id: button
         anchors.fill: parent
+
+        enabled: !parent.disabled
+
         Component.onCompleted: {
             pressAndHold.connect(parent.pressAndHold);
             clicked.connect(parent.clicked);
