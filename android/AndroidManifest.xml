@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<manifest package="org.monarq.mtg.proLIFErate" android:installLocation="auto" android:versionCode="8" android:versionName="0.4.2-beta-l" xmlns:android="http://schemas.android.com/apk/res/android">
-    <application android:icon="@drawable/icon" android:label="proLIFErate" android:name="org.qtproject.qt5.android.bindings.QtApplication">
-        <activity android:label="@string/app_name" android:screenOrientation="portrait" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:configChanges="orientation|uiMode|screenLayout|locale|fontScale|keyboard|keyboardHidden|navigation">
+<manifest package="org.monarq.mtg.proLIFErate" android:installLocation="auto" android:versionCode="9" android:versionName="0.4.3-beta" xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:icon="@drawable/icon" android:label="proLIFErate" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:theme="@style/proLIFErate_Theme">
+        <activity android:label="@string/app_name" android:screenOrientation="portrait" android:name="org.monarq.mtg.activities.GameActivity" android:configChanges="orientation|uiMode|screenLayout|locale|fontScale|keyboard|keyboardHidden|navigation" android:theme="@style/proLIFErate_Theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -31,7 +31,7 @@
             <!-- Splash screen -->
         </activity>
     </application>
-    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="17"/>
+    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="21"/>
     <supports-screens android:normalScreens="true" android:smallScreens="true" android:anyDensity="true" android:largeScreens="true"/>
     <!-- %%INSERT_PERMISSIONS -->
     <!-- %%INSERT_FEATURES -->

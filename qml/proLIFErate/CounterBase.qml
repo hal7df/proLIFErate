@@ -28,7 +28,7 @@ Item {
     Rectangle {
         id: counterDispContainer
 
-        anchors { top: parent.top; right: parent.right; left: parent.left; bottom: parent.bottom; margins:2; bottomMargin: 4 }
+        anchors { top: parent.top; right: parent.right; left: parent.left; bottom: parent.bottom; margins: (parent.width*0.02); bottomMargin: 1.25*anchors.margins }
 
         color: "#ffffff"
 
@@ -156,9 +156,7 @@ Item {
             right: counterDispContainer.right
             left: counterDispContainer.left
             bottom: parent.bottom
-            bottomMargin: 2
-            leftMargin: 2
-            rightMargin: 2
+            bottomMargin: (parent.height-counterDispContainer.height)/4
         }
 
         color: "#cccccc"
