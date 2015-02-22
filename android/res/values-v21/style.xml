@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="proLIFErate_Theme" parent="android:Theme.Material.Light">
+      <item name="android:colorPrimary">#ff4444</item>
+      <item name="android:colorPrimaryDark">#cc0000</item>
+    </style>
+</resources>

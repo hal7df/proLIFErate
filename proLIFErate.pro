@@ -15,6 +15,7 @@ SOURCES += main.cpp \
 
 QT += core \
       bluetooth \
+      androidextras
 
 # Please do not modify the following two lines. Required for deployment.
 include(qtquick2applicationviewer/qtquick2applicationviewer.pri)
@@ -23,7 +24,9 @@ qtcAddDeployment()
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
 OTHER_FILES += \
-    android/AndroidManifest.xml
+    android/AndroidManifest.xml \
+    proLIFErate.desktop \
+    proLIFErate_harmattan.desktop
 
 HEADERS += \
     include/bluetoothgameserver.h
