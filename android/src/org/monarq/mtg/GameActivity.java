@@ -29,8 +29,21 @@ public class GameActivity extends QtActivity
   {
     s_activity = this;
     setTitleBar();
-    acquireWakeLock();
     super.onCreate(savedInstanceState);
+  }
+  
+  @Override
+  public void onStart()
+  {
+    super.onStart();
+    acquireWakeLock();
+  }
+  
+  @Override
+  public void onStop()
+  {
+    wl.release();
+    Log.d("GameActivity","Released wake lock");
   }
   
   @Override
@@ -38,8 +51,6 @@ public class GameActivity extends QtActivity
   {
     super.onDestroy();
     s_activity = null;
-    wl.release();
-    Log.d("GameActivity","Released wake lock");
   }
 
   public void setTitleBar() {
